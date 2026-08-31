@@ -5,11 +5,13 @@ import { useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { signIn } from 'next-auth/react';
-import { Mail, Lock, Eye, EyeOff, ArrowRight } from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff, ArrowRight, Loader2 } from 'lucide-react';
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-neutral-50 p-4">
@@ -20,25 +22,45 @@ export default function LoginPage() {
             <p className="text-neutral-600">Sign in to your account to continue</p>
           </div>
 
+          {error && (
+            <div className="mb-6 p-3 bg-red-50 border border-red-200 text-red-600 rounded-md text-sm">
+              {error}
+            </div>
+          )}
+
           <form className="space-y-5" onSubmit={async (e: React.FormEvent<HTMLFormElement>) => {
             e.preventDefault();
-            const form = e.currentTarget;
-            const data = new FormData(form);
-            const email = data.get('email') as string;
-            const password = data.get('password') as string;
+            setIsLoading(true);
+            setError(null);
+            
+            try {
+              const form = e.currentTarget;
+              const data = new FormData(form);
+              const email = data.get('email') as string;
+              const password = data.get('password') as string;
 
-            const result = await signIn('credentials', {
-              redirect: false,
-              email,
-              password,
-            });
+              const result = await signIn('credentials', {
+                redirect: false,
+                email,
+                password,
+              });
 
-            if (result?.error) {
-              alert(result.error);
-              return;
+              if (result?.error) {
+                // NextAuth v5 masks custom errors as 'Configuration' or 'CredentialsSignin'
+                if (result.error === 'Configuration' || result.error === 'CredentialsSignin') {
+                  setError('Invalid email or password.');
+                } else {
+                  setError(result.error);
+                }
+                return;
+              }
+
+              window.location.href = '/dashboard';
+            } catch (err) {
+              setError('An unexpected error occurred. Please try again.');
+            } finally {
+              setIsLoading(false);
             }
-
-            window.location.href = '/dashboard';
           }}>
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-neutral-900 mb-2">
@@ -93,10 +115,20 @@ export default function LoginPage() {
 
             <Button 
               type="submit" 
-              className="group w-full h-11 bg-green-600 hover:bg-green-700 text-white font-medium transition-all hover:scale-[1.02] hover:shadow-lg cursor-pointer"
+              disabled={isLoading}
+              className="group w-full h-11 bg-green-600 hover:bg-green-700 text-white font-medium transition-all hover:scale-[1.02] hover:shadow-lg cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:hover:shadow-none"
             >
-              Sign in
-              <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+              {isLoading ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Signing in...
+                </>
+              ) : (
+                <>
+                  Sign in
+                  <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                </>
+              )}
             </Button>
           </form>
 

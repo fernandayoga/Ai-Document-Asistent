@@ -16,9 +16,12 @@ export function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <div className="flex h-full w-64 flex-col border-r border-neutral-200 bg-white">
-      <div className="flex h-16 items-center border-b border-neutral-200 px-6">
-        <span className="text-lg font-semibold text-neutral-900">AI Document Assistant</span>
+    <div className="hidden md:flex h-full w-64 shrink-0 flex-col border-r border-neutral-200 bg-white shadow-[4px_0_32px_rgba(0,0,0,0.08)] z-10 relative">
+      <div className="flex h-16 items-center gap-2.5 border-b border-neutral-200 px-6">
+        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-green-600 shadow-sm">
+          <FileText className="h-4 w-4 text-white" strokeWidth={2.5} />
+        </div>
+        <span className="text-sm font-bold text-neutral-900 tracking-tight whitespace-nowrap">AI Document Assistant</span>
       </div>
       <nav className="flex-1 space-y-1 px-3 py-4">
         {navigation.map((item) => {
@@ -28,10 +31,10 @@ export function Sidebar() {
               key={item.name}
               href={item.href}
               className={cn(
-                'flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors',
+                'flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-semibold transition-colors',
                 isActive
-                  ? 'bg-neutral-100 text-neutral-900'
-                  : 'text-neutral-600 hover:bg-neutral-50 hover:text-neutral-900'
+                  ? 'bg-green-50 text-green-700'
+                  : 'text-neutral-500 hover:bg-neutral-50 hover:text-neutral-900'
               )}
             >
               <item.icon className="h-5 w-5" />

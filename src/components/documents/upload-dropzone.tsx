@@ -5,12 +5,10 @@ import { useDropzone } from 'react-dropzone';
 import { Upload, File, X, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { useRouter } from 'next/navigation';
 
-interface UploadDropzoneProps {
-  onUploadComplete: (documentId: string) => void;
-}
-
-export function UploadDropzone({ onUploadComplete }: UploadDropzoneProps) {
+export function UploadDropzone() {
+  const router = useRouter();
   const [uploading, setUploading] = useState(false);
   const [progress, setProgress] = useState(0);
   const [status, setStatus] = useState<string>('');
@@ -61,7 +59,7 @@ export function UploadDropzone({ onUploadComplete }: UploadDropzoneProps) {
       setStatus('Complete');
 
       setTimeout(() => {
-        onUploadComplete(result.documentId);
+        router.push(`/documents/${result.documentId}`);
       }, 500);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Upload failed');
@@ -69,7 +67,7 @@ export function UploadDropzone({ onUploadComplete }: UploadDropzoneProps) {
       setProgress(0);
       setStatus('');
     }
-  }, [onUploadComplete]);
+  }, [router]);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
@@ -86,8 +84,9 @@ export function UploadDropzone({ onUploadComplete }: UploadDropzoneProps) {
       <div
         {...getRootProps()}
         className={cn(
-          'relative flex flex-col items-center justify-center rounded-lg border-2 border-dashed p-12 transition-colors',
-          isDragActive ? 'border-green-500 bg-green-50' : 'border-neutral-300 bg-white hover:border-neutral-400',
+          'group relative flex flex-col items-center justify-center rounded-xl border-2 border-dashed p-16 transition-all duration-300',
+          isDragActive ? 'border-green-500 bg-green-50/50 scale-[0.99]' : 'border-neutral-200 bg-neutral-50/30 hover:border-green-400 hover:bg-green-50/40',
+          !uploading && 'cursor-pointer',
           uploading && 'opacity-50 cursor-not-allowed'
         )}
       >
@@ -105,12 +104,14 @@ export function UploadDropzone({ onUploadComplete }: UploadDropzoneProps) {
           </div>
         ) : (
           <div className="flex flex-col items-center">
-            <Upload className="h-12 w-12 text-neutral-400" />
-            <p className="mt-4 text-base font-medium text-neutral-900">
-              {isDragActive ? 'Drop your PDF here' : 'Drag and drop your PDF'}
+            <div className="h-16 w-16 bg-green-100 rounded-full flex items-center justify-center mb-6 shadow-sm transition-all duration-300 group-hover:scale-110 group-hover:bg-green-200">
+              <Upload className="h-8 w-8 text-green-600 transition-transform duration-300 group-hover:-translate-y-1" />
+            </div>
+            <p className="text-xl font-bold text-neutral-900 transition-colors group-hover:text-green-700">
+              {isDragActive ? 'Drop your PDF here' : 'Drag and drop your PDF here'}
             </p>
-            <p className="mt-2 text-sm text-neutral-500">or click to browse</p>
-            <p className="mt-4 text-xs text-neutral-400">Maximum file size: 10MB</p>
+            <p className="mt-2 text-sm font-medium text-green-600 transition-colors group-hover:text-green-700 underline-offset-2 group-hover:underline">or click to browse</p>
+            <p className="mt-6 text-xs text-neutral-400">Maximum file size: 10MB</p>
           </div>
         )}
       </div>

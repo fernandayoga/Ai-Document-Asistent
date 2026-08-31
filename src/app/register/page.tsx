@@ -4,11 +4,13 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Mail, Lock, User, Eye, EyeOff, ArrowRight } from 'lucide-react';
+import { Mail, Lock, User, Eye, EyeOff, ArrowRight, Loader2 } from 'lucide-react';
 
 export default function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-neutral-50 p-4">
@@ -19,26 +21,42 @@ export default function RegisterPage() {
             <p className="text-neutral-600">Start exploring your documents with AI</p>
           </div>
 
+          {error && (
+            <div className="mb-6 p-3 bg-red-50 border border-red-200 text-red-600 rounded-md text-sm">
+              {error}
+            </div>
+          )}
+
           <form className="space-y-5" onSubmit={async (e: React.FormEvent<HTMLFormElement>) => {
             e.preventDefault();
-            const form = e.currentTarget;
-            const data = new FormData(form);
-            const response = await fetch('/api/auth/register', {
-              method: 'POST',
-              body: JSON.stringify({
-                name: data.get('name'),
-                email: data.get('email'),
-                password: data.get('password'),
-                confirmPassword: data.get('confirmPassword'),
-              }),
-              headers: { 'Content-Type': 'application/json' },
-            });
-            const result = await response.json();
-            if (!response.ok) {
-              alert(result.error || 'Registration failed');
-              return;
+            setIsLoading(true);
+            setError(null);
+            
+            try {
+              const form = e.currentTarget;
+              const data = new FormData(form);
+              const response = await fetch('/api/auth/register', {
+                method: 'POST',
+                body: JSON.stringify({
+                  name: data.get('name'),
+                  email: data.get('email'),
+                  password: data.get('password'),
+                  confirmPassword: data.get('confirmPassword'),
+                }),
+                headers: { 'Content-Type': 'application/json' },
+              });
+              const result = await response.json();
+              
+              if (!response.ok) {
+                setError(result.error || 'Registration failed');
+                return;
+              }
+              window.location.href = '/dashboard';
+            } catch (err) {
+              setError('An unexpected error occurred. Please try again.');
+            } finally {
+              setIsLoading(false);
             }
-            window.location.href = '/dashboard';
           }}>
             <div>
               <label htmlFor="name" className="block text-sm font-medium text-neutral-900 mb-2">
@@ -143,10 +161,20 @@ export default function RegisterPage() {
 
             <Button 
               type="submit" 
-              className="group w-full h-11 bg-green-600 hover:bg-green-700 text-white font-medium transition-all hover:scale-[1.02] hover:shadow-lg cursor-pointer"
+              disabled={isLoading}
+              className="group w-full h-11 bg-green-600 hover:bg-green-700 text-white font-medium transition-all hover:scale-[1.02] hover:shadow-lg cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:hover:shadow-none"
             >
-              Create account
-              <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+              {isLoading ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Creating account...
+                </>
+              ) : (
+                <>
+                  Create account
+                  <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                </>
+              )}
             </Button>
           </form>
 
