@@ -8,19 +8,19 @@ export default function LandingPage() {
     <div className="min-h-screen flex flex-col bg-neutral-50">
       <header className="border-b border-neutral-200/60 bg-white/80 backdrop-blur-sm sticky top-0 z-50">
         <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-green-600 rounded-lg flex items-center justify-center">
+          <div className="flex items-center justify-between gap-2">
+            <div className="flex items-center gap-2 min-w-0">
+              <div className="w-8 h-8 bg-green-600 rounded-lg flex items-center justify-center flex-shrink-0">
                 <FileText className="w-5 h-5 text-white" />
               </div>
-              <span className="text-lg font-semibold text-neutral-900">AI Document Assistant</span>
+              <span className="text-base sm:text-lg font-semibold text-neutral-900 truncate">AI Document Assistant</span>
             </div>
-            <div className="flex items-center gap-4">
-              <Link href="/login" className="text-sm font-medium text-neutral-600 hover:text-neutral-900 transition-colors">
+            <div className="flex items-center gap-3 sm:gap-4 flex-shrink-0">
+              <Link href="/login" className="text-sm font-medium text-neutral-600 hover:text-neutral-900 transition-colors cursor-pointer hover:underline whitespace-nowrap">
                 Sign in
               </Link>
               <Link href="/register">
-                <Button className="bg-green-600 hover:bg-green-700">Get Started</Button>
+                <Button className="bg-green-600 hover:bg-green-700 transition-all hover:scale-105 hover:shadow-md cursor-pointer px-3 sm:px-4 text-xs sm:text-sm h-9 sm:h-10">Get Started</Button>
               </Link>
             </div>
           </div>
@@ -28,7 +28,7 @@ export default function LandingPage() {
       </header>
 
       <main className="flex-1">
-        <section className="relative py-20 sm:py-28 lg:py-36 overflow-hidden">
+        <section className="relative py-8 sm:py-6 lg:py-8 overflow-hidden">
           <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
           
           <div className="absolute top-20 right-0 w-96 h-96 bg-green-500/5 rounded-full blur-3xl"></div>
@@ -36,11 +36,8 @@ export default function LandingPage() {
 
           <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
-              <div>
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-green-50 border border-green-200 mb-6">
-                  <Sparkles className="w-4 h-4 text-green-600" />
-                  <span className="text-sm font-medium text-green-700">AI-Powered Document Understanding</span>
-                </div>
+              <div className="lg:self-start lg:pt-16">
+               
                 
                 <h1 className="text-5xl font-bold tracking-tight text-neutral-900 sm:text-6xl lg:text-7xl">
                   Understand your documents <span className="text-green-600">faster</span>.
@@ -52,33 +49,16 @@ export default function LandingPage() {
                 
                 <div className="mt-10 flex items-center gap-4">
                   <Link href="/register">
-                    <Button size="lg" className="bg-green-600 hover:bg-green-700 h-12 px-6">
+                    <Button size="lg" className="bg-green-600 hover:bg-green-700 h-12 px-6 transition-all hover:scale-105 hover:shadow-lg cursor-pointer">
                       Upload your first document
                     </Button>
                   </Link>
                 </div>
 
-                <div className="mt-8 flex items-center gap-6">
-                  <div className="flex -space-x-2">
-                    <div className="w-10 h-10 rounded-full bg-neutral-200 border-2 border-white"></div>
-                    <div className="w-10 h-10 rounded-full bg-neutral-300 border-2 border-white"></div>
-                    <div className="w-10 h-10 rounded-full bg-neutral-400 border-2 border-white"></div>
-                    <div className="w-10 h-10 rounded-full bg-neutral-500 border-2 border-white"></div>
-                  </div>
-                  <div>
-                    <div className="flex gap-0.5 mb-1">
-                      {[...Array(5)].map((_, i) => (
-                        <svg key={i} className="w-4 h-4 text-green-600 fill-current" viewBox="0 0 20 20">
-                          <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z" />
-                        </svg>
-                      ))}
-                    </div>
-                    <p className="text-sm text-neutral-600">Join 1,000+ users already saving hours every week.</p>
-                  </div>
-                </div>
+                
               </div>
 
-              <div className="relative lg:h-[600px]">
+              <div className="relative">
                 <div className="absolute inset-0 bg-gradient-to-br from-green-50 to-neutral-100 rounded-2xl"></div>
                 
                 <div className="relative p-6 space-y-4">
@@ -97,7 +77,7 @@ export default function LandingPage() {
                         <p className="text-sm text-neutral-600 leading-relaxed">
                           This research explores the impact of artificial intelligence on modern document analysis and knowledge extraction. The study presents a new approach that improves accuracy and efficiency in analyzing large-form documents.
                         </p>
-                        <button className="text-sm text-green-600 font-medium mt-2 hover:underline">Show more</button>
+                        <div className="text-sm text-green-600 font-medium mt-2 cursor-pointer hover:text-green-700 hover:underline transition-all">Show more</div>
                       </div>
 
                       <div className="mb-4">
@@ -151,7 +131,7 @@ export default function LandingPage() {
 
         <section className="py-20 bg-white border-y border-neutral-200">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-16">
+            <div className="text-center mb-12">
               <h2 className="text-3xl font-bold tracking-tight text-neutral-900 sm:text-4xl">
                 How it works
               </h2>
@@ -163,37 +143,32 @@ export default function LandingPage() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
               {[
                 {
-                  step: '1',
                   title: 'Upload',
                   description: 'Drag and drop your PDF or click to select a file',
                   icon: FileText,
                 },
                 {
-                  step: '2',
                   title: 'Understand',
                   description: 'Get an AI-generated summary with key points and main topics',
                   icon: Sparkles,
                 },
                 {
-                  step: '3',
                   title: 'Ask',
                   description: 'Chat with your document to find specific information',
                   icon: MessageSquare,
                 },
-              ].map((item, i) => (
-                <div key={i} className="relative">
-                  {i < 2 && (
-                    <div className="hidden md:block absolute top-12 left-full w-full h-0.5 bg-gradient-to-r from-green-200 to-transparent -ml-4"></div>
-                  )}
-                  <div className="relative bg-neutral-50 rounded-2xl p-8 border border-neutral-200 hover:border-green-200 transition-colors">
-                    <div className="mb-6 flex items-center justify-center w-14 h-14 rounded-xl bg-green-100 text-green-700 font-bold text-xl">
-                      {item.step}
+              ].map((item, i) => {
+                const Icon = item.icon;
+                return (
+                  <div key={i} className="flex flex-col items-start text-left md:items-center md:text-center rounded-xl bg-neutral-50 border border-neutral-200 p-8 hover:border-green-200 hover:bg-neutral-100 transition-all duration-300">
+                    <div className="w-16 h-16 rounded-xl bg-green-100 flex items-center justify-center mb-4">
+                      <Icon className="w-8 h-8 text-green-600" />
                     </div>
-                    <h3 className="text-xl font-semibold text-neutral-900 mb-3">{item.title}</h3>
-                    <p className="text-neutral-600">{item.description}</p>
+                    <h3 className="text-xl font-semibold text-neutral-900 mb-2">{item.title}</h3>
+                    <p className="text-sm text-neutral-600">{item.description}</p>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         </section>
@@ -256,9 +231,9 @@ export default function LandingPage() {
             </p>
             <div className="mt-10 flex items-center justify-center gap-4">
               <Link href="/register">
-                <Button size="lg" variant="secondary" className="bg-white text-neutral-900 hover:bg-neutral-100 h-12 px-8">
+                <Button size="lg" variant="secondary" className="group bg-white text-neutral-900 hover:bg-neutral-100 h-12 px-8 transition-all hover:scale-105 hover:shadow-lg cursor-pointer">
                   Get Started Free
-                  <ChevronRight className="ml-2 w-4 h-4" />
+                  <ChevronRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
                 </Button>
               </Link>
             </div>
@@ -266,17 +241,11 @@ export default function LandingPage() {
         </section>
       </main>
 
-      <footer className="border-t border-neutral-200 bg-white py-12">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-green-600 rounded-lg flex items-center justify-center">
-                <FileText className="w-5 h-5 text-white" />
-              </div>
-              <span className="text-sm font-semibold text-neutral-900">AI Document Assistant</span>
-            </div>
-            <p className="text-sm text-neutral-500">Professional document understanding</p>
-          </div>
+      <footer className="border-t border-neutral-200 bg-white py-8">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
+          <p className="text-sm text-neutral-500">
+            &copy; {new Date().getFullYear()} AI Document Assistant. All rights reserved.
+          </p>
         </div>
       </footer>
     </div>
